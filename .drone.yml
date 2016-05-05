@@ -1,0 +1,27 @@
+pipeline:
+  build:
+    image: golang:1.5
+    environment:
+      - CGO_ENABLED=0
+      - GO15VENDOREXPERIMENT=1
+    commands:
+      - go vet
+      - go test
+      - go build -ldflags "-s -w -X main.version=$DRONE_BUILD_NUMBER"
+
+  docker:
+    repo: plugins/sftp-cache
+    tag: latest
+    when:
+      event: push
+      branch: master
+
+plugin:
+  name: Sftp Cache
+  desc: Cache and restore your build environment
+  type: cache
+  image: plugins/sftp-cache
+  labels:
+    - cache
+    - sftp
+    - ssh

@@ -1,0 +1,41 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"path": "github.com/codegangsta/cli",
+			"revision": "71f57d300dd6a780ac1856c005c4b518cfd498ec",
+			"revisionTime": "2016-04-03T18:54:34-07:00"
+		},
+		{
+			"path": "github.com/joho/godotenv",
+			"revision": "4ed13390c0acd2ff4e371e64d8b97c8954138243",
+			"revisionTime": "2015-09-07T11:02:28+10:00"
+		},
+		{
+			"path": "github.com/joho/godotenv/autoload",
+			"revision": "4ed13390c0acd2ff4e371e64d8b97c8954138243",
+			"revisionTime": "2015-09-07T11:02:28+10:00"
+		},
+		{
+			"path": "github.com/kr/fs",
+			"revision": "2788f0dbd16903de03cb8186e5c7d97b69ad387b",
+			"revisionTime": "2013-11-07T09:25:44+11:00"
+		},
+		{
+			"path": "github.com/pkg/sftp",
+			"revision": "e84cc8c755ca39b7b64f510fe1fffc1b51f210a5",
+			"revisionTime": "2016-01-18T14:07:21-05:00"
+		},
+		{
+			"path": "golang.org/x/crypto/curve25519",
+			"revision": "285fb2ed20d1dc450fc743a1b3ff7c36bef372b9",
+			"revisionTime": "2016-04-26T14:32:32+02:00"
+		},
+		{
+			"path": "golang.org/x/crypto/ssh",
+			"revision": "285fb2ed20d1dc450fc743a1b3ff7c36bef372b9",
+			"revisionTime": "2016-04-26T14:32:32+02:00"
+		}
+	]
+}

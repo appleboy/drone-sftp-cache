@@ -1,8 +1,11 @@
 package main
 
 import (
+	"io"
 	"log"
 	"os"
+
+	"github.com/drone-plugins/drone-sftp-cache/cache/sftp"
 
 	"github.com/codegangsta/cli"
 	_ "github.com/joho/godotenv/autoload"
@@ -19,12 +22,17 @@ func main() {
 	app.Flags = []cli.Flag{
 
 		cli.StringFlag{
-			Name:   "repo",
+			Name:   "repo.name",
 			Usage:  "repository full name",
 			EnvVar: "DRONE_REPO",
 		},
 		cli.StringFlag{
-			Name:   "branch",
+			Name:   "repo.branch",
+			Usage:  "repository default branch",
+			EnvVar: "DRONE_REPO_BRANCH",
+		},
+		cli.StringFlag{
+			Name:   "commit.branch",
 			Value:  "master",
 			Usage:  "repository branch",
 			EnvVar: "DRONE_COMMIT_BRANCH",
@@ -82,19 +90,32 @@ func main() {
 
 func run(c *cli.Context) {
 	plugin := Plugin{
-		Mount:    c.StringSlice("mount"),
-		Path:     c.String("path"),
-		Server:   c.String("server"),
-		Username: c.String("username"),
-		Password: c.String("password"),
-		Key:      c.String("key"),
-		Repo:     c.String("repo"),
-		Branch:   c.String("branch"),
-		Rebuild:  c.Bool("rebuild"),
-		Restore:  c.Bool("restore"),
+		Mount:   c.StringSlice("mount"),
+		Path:    c.String("path"),
+		Repo:    c.String("repo.name"),
+		Default: c.String("repo.branch"),
+		Branch:  c.String("commit.branch"),
 	}
 
-	if err := plugin.Exec(); err != nil {
+	sftp, err := sftp.New(
+		c.String("server"),
+		c.String("username"),
+		c.String("password"),
+		c.String("key"),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer sftp.(io.Closer).Close()
+
+	if c.Bool("rebuild") {
+		err = plugin.Rebuild(sftp)
+	}
+	// if c.Bool("restore") {
+	// 	err = plugin.Restore(sftp)
+	// }
+
+	if err != nil {
 		log.Println(err) // this plugins does not fail on error
 	}
 }
