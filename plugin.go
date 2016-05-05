@@ -27,7 +27,7 @@ func (p Plugin) Rebuild(c cache.Cache) error {
 
 		log.Printf("archiving directory <%s> to remote cache <%s>", mount, path)
 
-		err := cache.Rebuild(c, mount, path)
+		err := cache.RebuildCmd(c, mount, path)
 		if err != nil {
 			return err
 		}
@@ -43,7 +43,7 @@ func (p Plugin) Restore(c cache.Cache) error {
 
 		log.Printf("restoring directory <%s> from remote cache <%s>", mount, path)
 
-		err := cache.Restore(c, path, mount)
+		err := cache.RestoreCmd(c, path, mount)
 		if err != nil {
 
 			// this is fallback code to restore from the projects default branch.
