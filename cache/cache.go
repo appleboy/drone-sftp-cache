@@ -109,7 +109,10 @@ func RestoreCmd(c Cache, src, dst string) error {
 	if err != nil {
 		return err
 	}
-	defer temp.Close()
+	defer func() {
+		temp.Close()
+		os.Remove(temp.Name())
+	}()
 
 	// download archive to temp file
 	if _, err := io.Copy(temp, rc); err != nil {
@@ -118,7 +121,6 @@ func RestoreCmd(c Cache, src, dst string) error {
 
 	// cleanup after ourself
 	temp.Close()
-	os.Remove(temp.Name())
 
 	// run extraction command
 	cmd := exec.Command("tar", "-xf", temp.Name(), "-C", "/")
