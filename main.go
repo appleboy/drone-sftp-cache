@@ -4,6 +4,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"time"
 
 	"github.com/drone-plugins/drone-sftp-cache/cache/sftp"
 
@@ -109,10 +110,14 @@ func run(c *cli.Context) {
 	defer sftp.(io.Closer).Close()
 
 	if c.Bool("rebuild") {
+		now := time.Now()
 		err = plugin.Rebuild(sftp)
+		log.Printf("cache built in %d", time.Since(now))
 	}
 	if c.Bool("restore") {
+		now := time.Now()
 		err = plugin.Restore(sftp)
+		log.Printf("cache restored in %d", time.Since(now))
 	}
 
 	if err != nil {

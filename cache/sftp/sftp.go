@@ -3,6 +3,7 @@ package sftp
 import (
 	"io"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/drone-plugins/drone-sftp-cache/cache"
@@ -42,6 +43,10 @@ func (c *cacher) Get(p string) (io.ReadCloser, error) {
 
 // Put uploads the contents of the io.Reader to the SFTP server.
 func (c *cacher) Put(p string, t time.Duration, src io.Reader) error {
+	err := c.sftp.Mkdir(filepath.Dir(p))
+	if err != nil {
+		return nil
+	}
 	dst, err := c.sftp.Create(p)
 	if err != nil {
 		return err
@@ -73,7 +78,8 @@ func (c *cacher) Close() error {
 // New returns a new SFTP remote Cache implementated.
 func New(server, username, password, key string) (cache.Cache, error) {
 	config := &ssh.ClientConfig{
-		User: username,
+		Timeout: time.Minute * 5,
+		User:    username,
 		Auth: []ssh.AuthMethod{
 			ssh.Password(password),
 		},

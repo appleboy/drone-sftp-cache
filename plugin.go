@@ -41,18 +41,18 @@ func (p Plugin) Restore(c cache.Cache) error {
 		hash := hasher(mount, p.Branch)
 		path := filepath.Join(p.Path, p.Repo, hash)
 
-		log.Printf("restoring directory %s from remote cache", mount)
+		log.Printf("restoring directory <%s> from remote cache <%s>", mount, path)
 
 		err := cache.Restore(c, path, mount)
 		if err != nil {
 
 			// this is fallback code to restore from the projects default branch.
-			hash = hasher(mount, "master")
-			path = filepath.Join(p.Path, p.Repo, hash)
-			log.Printf("restoring directory %s from remote cache, using default branch", mount)
-			if xerr := cache.Restore(c, path, mount); xerr != nil {
-				return err
-			}
+			// hash = hasher(mount, "master")
+			// path = filepath.Join(p.Path, p.Repo, hash)
+			// log.Printf("restoring directory %s from remote cache, using default branch", mount)
+			// if xerr := cache.Restore(c, path, mount); xerr != nil {
+			return err
+			// }
 		}
 	}
 	return nil
