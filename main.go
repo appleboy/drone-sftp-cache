@@ -112,12 +112,12 @@ func run(c *cli.Context) {
 	if c.Bool("rebuild") {
 		now := time.Now()
 		err = plugin.Rebuild(sftp)
-		log.Printf("cache built in %d", time.Since(now))
+		log.Printf("cache built in %v", time.Since(now))
 	}
 	if c.Bool("restore") {
 		now := time.Now()
 		err = plugin.Restore(sftp)
-		log.Printf("cache restored in %d", time.Since(now))
+		log.Printf("cache restored in %v", time.Since(now))
 	}
 
 	if err != nil {

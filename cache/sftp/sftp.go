@@ -2,6 +2,7 @@ package sftp
 
 import (
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -43,15 +44,23 @@ func (c *cacher) Get(p string) (io.ReadCloser, error) {
 
 // Put uploads the contents of the io.Reader to the SFTP server.
 func (c *cacher) Put(p string, t time.Duration, src io.Reader) error {
-	err := c.sftp.Mkdir(filepath.Dir(p))
+	dir := filepath.Dir(p)
+
+	log.Printf("creating directory %s on remote server", dir)
+	err := c.sftp.Mkdir(dir)
 	if err != nil {
-		return nil
+		return err
 	}
+	log.Printf("creating file %s on remote server", p)
+
 	dst, err := c.sftp.Create(p)
 	if err != nil {
 		return err
 	}
+	defer dst.Close()
+	log.Printf("write to file %s on remote server", p)
 	_, err = io.Copy(dst, src)
+	log.Printf("closing file %s on remote server", p)
 	return err
 }
 
