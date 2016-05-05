@@ -16,6 +16,7 @@ pipeline:
   docker:
     repo: plugins/sftp-cache
     tag: latest
+    storage_driver: overlay
     when:
       event: push
       branch: master
