@@ -1,5 +1,6 @@
 workspace:
   base: /go
+  path: /go/src/github.com/drone-plugins/drone-sftp-cache
 
 pipeline:
   build:
@@ -8,9 +9,6 @@ pipeline:
       - CGO_ENABLED=0
       - GO15VENDOREXPERIMENT=1
     commands:
-      - echo $GOPATH
-      - echo $PATH
-      - pwd
       - go vet
       - go test
       - go build -ldflags "-s -w -X main.version=$DRONE_BUILD_NUMBER"
