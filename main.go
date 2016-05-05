@@ -111,9 +111,9 @@ func run(c *cli.Context) {
 	if c.Bool("rebuild") {
 		err = plugin.Rebuild(sftp)
 	}
-	// if c.Bool("restore") {
-	// 	err = plugin.Restore(sftp)
-	// }
+	if c.Bool("restore") {
+		err = plugin.Restore(sftp)
+	}
 
 	if err != nil {
 		log.Println(err) // this plugins does not fail on error

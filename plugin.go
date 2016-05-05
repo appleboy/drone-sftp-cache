@@ -25,7 +25,7 @@ func (p Plugin) Rebuild(c cache.Cache) error {
 		hash := hasher(mount, p.Branch)
 		path := filepath.Join(p.Path, p.Repo, hash)
 
-		log.Printf("archiving directory %s to remote cache", mount)
+		log.Printf("archiving directory <%s> to remote cache <%s>", mount, path)
 
 		err := cache.Rebuild(c, mount, path)
 		if err != nil {
