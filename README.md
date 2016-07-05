@@ -23,7 +23,7 @@ Build the docker image with the following commands:
 docker build --rm=true -t plugins/sftp-cache .
 ```
 
-Please note incorrectly building the image for the correct x64 linux and with GCO disabled will result in an error when running the Docker image:
+Please note incorrectly building the image for the correct x64 linux and with CGO disabled will result in an error when running the Docker image:
 
 ```
 docker: Error response from daemon: Container command
