@@ -60,29 +60,29 @@ func main() {
 		cli.StringFlag{
 			Name:   "server",
 			Usage:  "sftp server",
-			EnvVar: "SFTP_CACHE_SERVER",
+			EnvVar: "SFTP_CACHE_SERVER,PLUGIN_SERVER",
 		},
 		cli.StringFlag{
 			Name:   "path",
 			Usage:  "sftp server path",
-			EnvVar: "SFTP_CACHE_PATH",
+			EnvVar: "SFTP_CACHE_PATH,PLUGIN_PATH",
 			Value:  "/var/lib/cache/drone",
 		},
 		cli.StringFlag{
 			Name:   "username",
 			Usage:  "sftp username",
-			EnvVar: "SFTP_CACHE_USERNAME",
+			EnvVar: "SFTP_CACHE_USERNAME,PLUGIN_USERNAME",
 			Value:  "root",
 		},
 		cli.StringFlag{
 			Name:   "password",
 			Usage:  "sftp password",
-			EnvVar: "SFTP_CACHE_PASSWORD",
+			EnvVar: "SFTP_CACHE_PASSWORD,PLUGIN_PASSWORD",
 		},
 		cli.StringFlag{
 			Name:   "key",
 			Usage:  "sftp private key",
-			EnvVar: "SFTP_CACHE_PRIVATE_KEY",
+			EnvVar: "SFTP_CACHE_PRIVATE_KEY,PLUGIN_KEY",
 		},
 	}
 
