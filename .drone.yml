@@ -1,22 +1,23 @@
+workspace:
+  base: /go
+
 pipeline:
-  build:
-    image: golang:1.5
+  test:
+    image: golang:1.6
     environment:
       - CGO_ENABLED=0
-      - GO15VENDOREXPERIMENT=1
-      - GOPATH=/drone
     commands:
       - go vet
-      - go test
-      - go build -ldflags "-s -w -X main.version=$DRONE_BUILD_NUMBER"
+      - go test -cover -coverprofile=coverage.out
+      - go build -ldflags "-s -w -X main.build=$DRONE_BUILD_NUMBER" -a -tags netgo
 
-  docker:
-    storage_driver: overlay
+  latest:
+    image: docker
     repo: plugins/sftp-cache
-    tag: [ "latest", "1.0", "1" ]
+    tags: [ "latest", "1.0", "1" ]
     when:
-      event: push
       branch: master
+      event: push
 
 plugin:
   name: Sftp Cache
