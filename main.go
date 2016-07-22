@@ -8,7 +8,7 @@ import (
 
 	"github.com/drone-plugins/drone-sftp-cache/cache/sftp"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 	_ "github.com/joho/godotenv/autoload"
 )
 
