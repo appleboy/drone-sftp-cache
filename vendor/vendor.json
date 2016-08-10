@@ -23,6 +23,12 @@
 			"revisionTime": "2013-11-07T09:25:44+11:00"
 		},
 		{
+			"checksumSHA1": "QoVjlQFru1ixgV8vh63T4/JAtLI=",
+			"path": "github.com/pkg/errors",
+			"revision": "a22138067af1c4942683050411a841ade67fe1eb",
+			"revisionTime": "2016-08-08T05:55:40Z"
+		},
+		{
 			"path": "github.com/pkg/sftp",
 			"revision": "e84cc8c755ca39b7b64f510fe1fffc1b51f210a5",
 			"revisionTime": "2016-01-18T14:07:21-05:00"
@@ -37,5 +43,6 @@
 			"revision": "285fb2ed20d1dc450fc743a1b3ff7c36bef372b9",
 			"revisionTime": "2016-04-26T14:32:32+02:00"
 		}
-	]
+	],
+	"rootPath": "github.com/drone-plugins/drone-sftp-cache"
 }
