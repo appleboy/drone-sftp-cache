@@ -1,6 +1,7 @@
 package sftp
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -8,7 +9,6 @@ import (
 
 	"github.com/drone-plugins/drone-sftp-cache/cache"
 
-	"github.com/pkg/errors"
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 )
@@ -49,13 +49,13 @@ func (c *cacher) Put(p string, t time.Duration, src io.Reader) error {
 	if _, serr := c.sftp.Stat(dir); serr != nil {
 		err := c.mkdirAll(dir, 0700)
 		if err != nil {
-			return errors.Wrapf(err, "mkdir failed for %s", dir)
+			return fmt.Errorf("%s, mkdir failed for %s", err, dir)
 		}
 	}
 
 	dst, err := c.sftp.Create(p)
 	if err != nil {
-		return errors.Wrapf(err, "sftp create failed for %s", p)
+		return fmt.Errorf("%s, sftp create failed for %s", err, p)
 	}
 	defer dst.Close()
 

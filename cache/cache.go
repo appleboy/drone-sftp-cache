@@ -1,14 +1,13 @@
 package cache
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 // Cache implements operations for caching files.
@@ -70,13 +69,13 @@ func RebuildCmd(c Cache, src, dst string) (err error) {
 	src = filepath.Clean(src)
 	src, err = filepath.Abs(src)
 	if err != nil {
-		return errors.Wrapf(err, "absolute path failed for %s", src)
+		return fmt.Errorf("%s, absolute path failed for %s", err, src)
 	}
 
 	// create a temporary file for the archive
 	dir, err := ioutil.TempDir("", "")
 	if err != nil {
-		return errors.Wrapf(err, "temp dir %s failed to be created", os.TempDir())
+		return fmt.Errorf("%s, temp dir %s failed to be created", err, os.TempDir())
 	}
 	tar := filepath.Join(dir, "archive.tar")
 
@@ -85,13 +84,13 @@ func RebuildCmd(c Cache, src, dst string) (err error) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		return errors.Wrapf(err, "tar cmd failed for file %s and src %s", tar, src)
+		return fmt.Errorf("%s, tar cmd failed for file %s and src %s", err, tar, src)
 	}
 
 	// upload file to server
 	f, err := os.Open(tar)
 	if err != nil {
-		return errors.Wrapf(err, "read failed for file %s", tar)
+		return fmt.Errorf("%s, read failed for file %s", err, tar)
 	}
 	defer f.Close()
 	return c.Put(dst, 0, f)
