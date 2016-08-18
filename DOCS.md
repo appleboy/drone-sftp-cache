@@ -35,12 +35,6 @@ drone secret add --image=plugins/sftp-cache \
 
 drone secret add --image=plugins/sftp-cache \
     octocat/hello-world SFTP_CACHE_PRIVATE_KEY @path/to/private/key
-
-drone secret add --image=plugins/sftp-cache \
-    octocat/hello-world SFTP_CACHE_SERVER cache.example.com:22
-
-drone secret add --image=plugins/sftp-cache \
-    octocat/hello-world SFTP_CACHE_PATH /var/cache/drone
 ```
 
 Then sign the YAML file after all secrets are added.
@@ -72,6 +66,8 @@ pipeline:
   cache:
     image: plugins/sftp-cache
     restore: true
+    server: cache.example.com:22
+    path: /var/cache/drone
   	mount:
   	  - node_modules
 
@@ -83,6 +79,8 @@ pipeline:
   cache:
     image: plugins/sftp-cache
     rebuild: true
+    server: cache.example.com:22
+    path: /var/cache/drone
   	mount:
   	  - node_modules
 ```
