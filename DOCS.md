@@ -27,13 +27,13 @@ It is highly recommended to put the **SFTP_CACHE_USERNAME** and
 not exposed to users. This can be done using the drone-cli.
 
 ```bash
-drone secret add --image=sftp-cache \
+drone secret add --image=plugins/sftp-cache \
     octocat/hello-world SFTP_CACHE_USERNAME octocat
 
-drone secret add --image=sftp-cache \
+drone secret add --image=plugins/sftp-cache \
     octocat/hello-world SFTP_CACHE_PASSWORD pa55word
 
-drone secret add --image=sftp-cache \
+drone secret add --image=plugins/sftp-cache \
     octocat/hello-world SFTP_CACHE_PRIVATE_KEY @path/to/private/key
 ```
 
@@ -46,14 +46,28 @@ drone sign octocat/hello-world
 See [secrets](http://readme.drone.io/0.5/usage/secrets/) for additional
 information on secrets
 
+On the remote server, ensure that the cache directory exists:
+
+```bash
+ssh octocat@cache.example.com
+sudo mkdir -p /var/cache/drone/octocat
+sudo chown octocat:octocat /var/cache/drone/octocat
+```
+
+The plugin will then store cache files under
+`/var/cache/drone/octocat/hello-world`.
+
 ## Example
 
 The following is a sample configuration in your .drone.yml file:
 
 ```yaml
 pipeline:
-  sftp_cache:
+  cache:
+    image: plugins/sftp-cache
     restore: true
+    server: cache.example.com:22
+    path: /var/cache/drone
   	mount:
   	  - node_modules
 
@@ -62,8 +76,11 @@ pipeline:
     commands:
       - npm install
 
-  sftp_cache:
+  cache:
+    image: plugins/sftp-cache
     rebuild: true
+    server: cache.example.com:22
+    path: /var/cache/drone
   	mount:
   	  - node_modules
 ```
