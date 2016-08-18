@@ -58,8 +58,10 @@ On the remote server, ensure that the cache directory exists:
 ssh octocat@cache.example.com
 sudo mkdir -p /var/cache/drone/octocat
 sudo chown octocat:octocat /var/cache/drone/octocat
-mkdir /var/cache/drone/octocat/hello-world
 ```
+
+The plugin will then store cache files under
+`/var/cache/drone/octocat/hello-world`.
 
 ## Example
 
