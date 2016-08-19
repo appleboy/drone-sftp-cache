@@ -27,13 +27,13 @@ It is highly recommended to put the **SFTP_CACHE_USERNAME** and
 not exposed to users. This can be done using the drone-cli.
 
 ```bash
-drone secret add --image=sftp-cache \
+drone secret add --image=plugins/sftp-cache \
     octocat/hello-world SFTP_CACHE_USERNAME octocat
 
-drone secret add --image=sftp-cache \
+drone secret add --image=plugins/sftp-cache \
     octocat/hello-world SFTP_CACHE_PASSWORD pa55word
 
-drone secret add --image=sftp-cache \
+drone secret add --image=plugins/sftp-cache \
     octocat/hello-world SFTP_CACHE_PRIVATE_KEY @path/to/private/key
 ```
 
@@ -53,6 +53,7 @@ The following is a sample configuration in your .drone.yml file:
 ```yaml
 pipeline:
   sftp_cache:
+    image: plugins/sftp-cache
     restore: true
   	mount:
   	  - node_modules
@@ -63,6 +64,7 @@ pipeline:
       - npm install
 
   sftp_cache:
+    image: plugins/sftp-cache
     rebuild: true
   	mount:
   	  - node_modules
