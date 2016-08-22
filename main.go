@@ -1,15 +1,11 @@
 package main
 
 import (
-	"io"
-	"log"
 	"os"
-	"time"
 
-	"github.com/drone-plugins/drone-sftp-cache/cache/sftp"
-
+	"github.com/Sirupsen/logrus"
+	"github.com/joho/godotenv"
 	"github.com/urfave/cli"
-	_ "github.com/joho/godotenv/autoload"
 )
 
 var version string // build number set at compile-time
@@ -17,11 +13,10 @@ var version string // build number set at compile-time
 func main() {
 	app := cli.NewApp()
 	app.Name = "sftp cache plugin"
-	app.Usage = "use the sftp cache plugin to cache and restore build artifacts"
+	app.Usage = "sftp cache plugin"
 	app.Action = run
 	app.Version = version
 	app.Flags = []cli.Flag{
-
 		cli.StringFlag{
 			Name:   "repo.name",
 			Usage:  "repository full name",
@@ -38,7 +33,6 @@ func main() {
 			Usage:  "repository branch",
 			EnvVar: "DRONE_COMMIT_BRANCH",
 		},
-
 		cli.StringSliceFlag{
 			Name:   "mount",
 			Usage:  "cache directories",
@@ -54,9 +48,6 @@ func main() {
 			Usage:  "restore the cache directories",
 			EnvVar: "PLUGIN_RESTORE",
 		},
-
-		// private variables that should be provided via secrets.
-
 		cli.StringFlag{
 			Name:   "server",
 			Usage:  "sftp server",
@@ -84,43 +75,35 @@ func main() {
 			Usage:  "sftp private key",
 			EnvVar: "SFTP_CACHE_PRIVATE_KEY,PLUGIN_KEY",
 		},
+		cli.StringFlag{
+			Name:  "env-file",
+			Usage: "source env file",
+		},
 	}
 
-	app.Run(os.Args)
+	if err := app.Run(os.Args); err != nil {
+		logrus.Fatal(err)
+	}
 }
 
-func run(c *cli.Context) {
+func run(c *cli.Context) error {
+	if c.String("env-file") != "" {
+		_ = godotenv.Load(c.String("env-file"))
+	}
+
 	plugin := Plugin{
-		Mount:   c.StringSlice("mount"),
-		Path:    c.String("path"),
-		Repo:    c.String("repo.name"),
-		Default: c.String("repo.branch"),
-		Branch:  c.String("commit.branch"),
+		Rebuild:  c.Bool("rebuild"),
+		Restore:  c.Bool("restore"),
+		Server:   c.String("server"),
+		Username: c.String("username"),
+		Password: c.String("password"),
+		Key:      c.String("key"),
+		Mount:    c.StringSlice("mount"),
+		Path:     c.String("path"),
+		Repo:     c.String("repo.name"),
+		Default:  c.String("repo.branch"),
+		Branch:   c.String("commit.branch"),
 	}
 
-	sftp, err := sftp.New(
-		c.String("server"),
-		c.String("username"),
-		c.String("password"),
-		c.String("key"),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer sftp.(io.Closer).Close()
-
-	if c.Bool("rebuild") {
-		now := time.Now()
-		err = plugin.Rebuild(sftp)
-		log.Printf("cache built in %v", time.Since(now))
-	}
-	if c.Bool("restore") {
-		now := time.Now()
-		err = plugin.Restore(sftp)
-		log.Printf("cache restored in %v", time.Since(now))
-	}
-
-	if err != nil {
-		log.Println(err) // this plugins does not fail on error
-	}
+	return plugin.Exec()
 }
