@@ -3,64 +3,45 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "ljZrmD7pmMXAkGNfp6IEzj31fY8=",
+			"path": "github.com/codegangsta/cli",
+			"revision": "71f57d300dd6a780ac1856c005c4b518cfd498ec",
+			"revisionTime": "2016-04-03T18:54:34-07:00"
+		},
+		{
 			"path": "github.com/joho/godotenv",
 			"revision": "4ed13390c0acd2ff4e371e64d8b97c8954138243",
-			"revisionTime": "2015-09-07T01:02:28Z"
+			"revisionTime": "2015-09-07T11:02:28+10:00"
 		},
 		{
-			"checksumSHA1": "UE4lhbPYYWEhqHXQk24OA73m5+8=",
 			"path": "github.com/joho/godotenv/autoload",
 			"revision": "4ed13390c0acd2ff4e371e64d8b97c8954138243",
-			"revisionTime": "2015-09-07T01:02:28Z"
+			"revisionTime": "2015-09-07T11:02:28+10:00"
 		},
 		{
-			"checksumSHA1": "KQhA4EQp4Ldwj9nJZnEURlE6aQw=",
 			"path": "github.com/kr/fs",
 			"revision": "2788f0dbd16903de03cb8186e5c7d97b69ad387b",
-			"revisionTime": "2013-11-06T22:25:44Z"
+			"revisionTime": "2013-11-07T09:25:44+11:00"
 		},
 		{
-			"checksumSHA1": "2HSjyUZ4IMkCeA34TjJ0/f+Kk/k=",
+			"checksumSHA1": "QoVjlQFru1ixgV8vh63T4/JAtLI=",
 			"path": "github.com/pkg/errors",
-			"revision": "1d2e60385a13aaa66134984235061c2f9302520e",
-			"revisionTime": "2016-07-24T02:43:27Z"
+			"revision": "a22138067af1c4942683050411a841ade67fe1eb",
+			"revisionTime": "2016-08-08T05:55:40Z"
 		},
 		{
-			"checksumSHA1": "FJIb/zcGEYhYUo33wSzX3T6hwGU=",
 			"path": "github.com/pkg/sftp",
-			"revision": "a71e8f580e3b622ebff585309160b1cc549ef4d2",
-			"revisionTime": "2016-07-21T23:14:53Z"
+			"revision": "e84cc8c755ca39b7b64f510fe1fffc1b51f210a5",
+			"revisionTime": "2016-01-18T14:07:21-05:00"
 		},
 		{
-			"checksumSHA1": "W1G9Avuz92Ng1IqblcO/cIe6pHU=",
-			"path": "github.com/urfave/cli",
-			"revision": "d9021faab69f92295ef7061bd39e4a76dcbdef32",
-			"revisionTime": "2016-07-26T01:14:03Z"
-		},
-		{
-			"checksumSHA1": "h+pFYiRHBogczS8/F1NoN3Ata44=",
 			"path": "golang.org/x/crypto/curve25519",
-			"revision": "bc89c496413265e715159bdc8478ee9a92fdc265",
-			"revisionTime": "2016-07-08T11:45:45Z"
+			"revision": "285fb2ed20d1dc450fc743a1b3ff7c36bef372b9",
+			"revisionTime": "2016-04-26T14:32:32+02:00"
 		},
 		{
-			"checksumSHA1": "wGb//LjBPNxYHqk+dcLo7BjPXK8=",
-			"path": "golang.org/x/crypto/ed25519",
-			"revision": "bc89c496413265e715159bdc8478ee9a92fdc265",
-			"revisionTime": "2016-07-08T11:45:45Z"
-		},
-		{
-			"checksumSHA1": "LXFcVx8I587SnWmKycSDEq9yvK8=",
-			"path": "golang.org/x/crypto/ed25519/internal/edwards25519",
-			"revision": "bc89c496413265e715159bdc8478ee9a92fdc265",
-			"revisionTime": "2016-07-08T11:45:45Z"
-		},
-		{
-			"checksumSHA1": "Lzk0xTzvdMm8Y4bErxJPSOj8iHk=",
 			"path": "golang.org/x/crypto/ssh",
-			"revision": "bc89c496413265e715159bdc8478ee9a92fdc265",
-			"revisionTime": "2016-07-08T11:45:45Z"
+			"revision": "285fb2ed20d1dc450fc743a1b3ff7c36bef372b9",
+			"revisionTime": "2016-04-26T14:32:32+02:00"
 		}
 	],
 	"rootPath": "github.com/drone-plugins/drone-sftp-cache"

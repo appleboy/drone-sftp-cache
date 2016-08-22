@@ -1,6 +1,7 @@
 package sftp
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -46,15 +47,15 @@ func (c *cacher) Put(p string, t time.Duration, src io.Reader) error {
 	dir := filepath.Dir(p)
 
 	if _, serr := c.sftp.Stat(dir); serr != nil {
-		err := c.sftp.Mkdir(dir)
+		err := c.mkdirAll(dir, 0700)
 		if err != nil {
-			return err
+			return fmt.Errorf("%s, mkdir failed for %s", err, dir)
 		}
 	}
 
 	dst, err := c.sftp.Create(p)
 	if err != nil {
-		return err
+		return fmt.Errorf("%s, sftp create failed for %s", err, p)
 	}
 	defer dst.Close()
 
@@ -80,6 +81,69 @@ func (c *cacher) Close() error {
 		c.sftp.Close()
 	}
 	return nil
+}
+
+func (c *cacher) mkdir(name string, perm os.FileMode) error {
+	err := c.sftp.Mkdir(name)
+	if err != nil {
+		return err
+	}
+	return c.chmod(name, perm)
+}
+
+func (c *cacher) mkdirAll(path string, perm os.FileMode) error {
+	// Fast path: if we can tell whether path is a directory or file, stop with success or error.
+	dir, err := c.sftp.Stat(path)
+	if err == nil {
+		if dir.IsDir() {
+			return nil
+		}
+		return err
+	}
+
+	// Slow path: make sure parent exists and then call Mkdir for path.
+	i := len(path)
+	for i > 0 && os.IsPathSeparator(path[i-1]) { // Skip trailing path separator.
+		i--
+	}
+
+	j := i
+	for j > 0 && !os.IsPathSeparator(path[j-1]) { // Scan backward over element.
+		j--
+	}
+
+	if j > 1 {
+		// Create parent
+		err = c.mkdirAll(path[0:j-1], perm)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Parent now exists; invoke Mkdir and use its result.
+	err = c.mkdir(path, perm)
+	if err != nil {
+		// Handle arguments like "foo/." by
+		// double-checking that directory doesn't exist.
+		dir, err1 := c.lstat(path)
+		if err1 == nil && dir.IsDir() {
+			return nil
+		}
+		return err
+	}
+	return nil
+}
+
+func (c *cacher) stat(name string) (os.FileInfo, error) {
+	return c.sftp.Stat(name)
+}
+
+func (s *cacher) lstat(p string) (os.FileInfo, error) {
+	return s.sftp.Lstat(p)
+}
+
+func (s *cacher) chmod(name string, mode os.FileMode) error {
+	return s.sftp.Chmod(name, mode)
 }
 
 // New returns a new SFTP remote Cache implementated.
