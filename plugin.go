@@ -6,21 +6,63 @@ import (
 	"io"
 	"log"
 	"path/filepath"
+	"time"
 
+	"github.com/Sirupsen/logrus"
 	"github.com/drone-plugins/drone-sftp-cache/cache"
+	"github.com/drone-plugins/drone-sftp-cache/cache/sftp"
 )
 
 // Plugin for caching directories to an SFTP server.
 type Plugin struct {
-	Mount   []string
-	Path    string
-	Repo    string
-	Branch  string
-	Default string // default master branch
+	Rebuild  bool
+	Restore  bool
+	Server   string
+	Username string
+	Password string
+	Key      string
+	Mount    []string
+	Path     string
+	Repo     string
+	Branch   string
+	Default  string // default master branch
+}
+
+func (p *Plugin) Exec() error {
+	sftp, err := sftp.New(
+		p.Server,
+		p.Username,
+		p.Password,
+		p.Key,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	defer sftp.(io.Closer).Close()
+
+	if p.Rebuild {
+		now := time.Now()
+		err = p.ProcessRebuild(sftp)
+		logrus.Printf("cache built in %v", time.Since(now))
+	}
+
+	if p.Restore {
+		now := time.Now()
+		err = p.ProcessRestore(sftp)
+		logrus.Printf("cache restored in %v", time.Since(now))
+	}
+
+	if err != nil {
+		logrus.Println(err)
+	}
+
+	return nil
 }
 
 // Rebuild the remote cache from the local environment.
-func (p Plugin) Rebuild(c cache.Cache) error {
+func (p Plugin) ProcessRebuild(c cache.Cache) error {
 	for _, mount := range p.Mount {
 		hash := hasher(mount, p.Branch)
 		path := filepath.Join(p.Path, p.Repo, hash)
@@ -36,7 +78,7 @@ func (p Plugin) Rebuild(c cache.Cache) error {
 }
 
 // Restore the local environment from the remote cache.
-func (p Plugin) Restore(c cache.Cache) error {
+func (p Plugin) ProcessRestore(c cache.Cache) error {
 	for _, mount := range p.Mount {
 		hash := hasher(mount, p.Branch)
 		path := filepath.Join(p.Path, p.Repo, hash)
