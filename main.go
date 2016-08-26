@@ -49,6 +49,11 @@ func main() {
 			Usage:  "restore the cache directories",
 			EnvVar: "PLUGIN_RESTORE",
 		},
+		cli.BoolFlag{
+			Name:   "ignore_branch",
+			Usage:  "ignore branch name on hash value",
+			EnvVar: "PLUGIN_IGNORE_BRANCH",
+		},
 		cli.StringFlag{
 			Name:   "server",
 			Usage:  "sftp server",
@@ -93,17 +98,18 @@ func run(c *cli.Context) error {
 	}
 
 	plugin := Plugin{
-		Rebuild:  c.Bool("rebuild"),
-		Restore:  c.Bool("restore"),
-		Server:   c.String("server"),
-		Username: c.String("username"),
-		Password: c.String("password"),
-		Key:      c.String("key"),
-		Mount:    c.StringSlice("mount"),
-		Path:     c.String("path"),
-		Repo:     c.String("repo.name"),
-		Default:  c.String("repo.branch"),
-		Branch:   c.String("commit.branch"),
+		IgnoreBranch: c.Bool("ignore_branch"),
+		Rebuild:      c.Bool("rebuild"),
+		Restore:      c.Bool("restore"),
+		Server:       c.String("server"),
+		Username:     c.String("username"),
+		Password:     c.String("password"),
+		Key:          c.String("key"),
+		Mount:        c.StringSlice("mount"),
+		Path:         c.String("path"),
+		Repo:         c.String("repo.name"),
+		Default:      c.String("repo.branch"),
+		Branch:       c.String("commit.branch"),
 	}
 
 	return plugin.Exec()

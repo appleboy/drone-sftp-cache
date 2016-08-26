@@ -15,17 +15,18 @@ import (
 
 // Plugin for caching directories to an SFTP server.
 type Plugin struct {
-	Rebuild  bool
-	Restore  bool
-	Server   string
-	Username string
-	Password string
-	Key      string
-	Mount    []string
-	Path     string
-	Repo     string
-	Branch   string
-	Default  string // default master branch
+	IgnoreBranch bool
+	Rebuild      bool
+	Restore      bool
+	Server       string
+	Username     string
+	Password     string
+	Key          string
+	Mount        []string
+	Path         string
+	Repo         string
+	Branch       string
+	Default      string // default master branch
 }
 
 func (p *Plugin) Exec() error {
@@ -64,7 +65,12 @@ func (p *Plugin) Exec() error {
 // Rebuild the remote cache from the local environment.
 func (p Plugin) ProcessRebuild(c cache.Cache) error {
 	for _, mount := range p.Mount {
-		hash := hasher(mount, p.Branch)
+		var hash string
+		if p.IgnoreBranch {
+			hash = hasher(mount)
+		} else {
+			hash = hasher(mount, p.Branch)
+		}
 		path := filepath.Join(p.Path, p.Repo, hash)
 
 		log.Printf("archiving directory <%s> to remote cache <%s>", mount, path)
@@ -80,7 +86,12 @@ func (p Plugin) ProcessRebuild(c cache.Cache) error {
 // Restore the local environment from the remote cache.
 func (p Plugin) ProcessRestore(c cache.Cache) error {
 	for _, mount := range p.Mount {
-		hash := hasher(mount, p.Branch)
+		var hash string
+		if p.IgnoreBranch {
+			hash = hasher(mount)
+		} else {
+			hash = hasher(mount, p.Branch)
+		}
 		path := filepath.Join(p.Path, p.Repo, hash)
 
 		log.Printf("restoring directory <%s> from remote cache <%s>", mount, path)
@@ -101,8 +112,8 @@ func (p Plugin) ProcessRestore(c cache.Cache) error {
 }
 
 // helper function to hash a file name based on path and branch.
-func hasher(mount, branch string) string {
-	parts := []string{mount, branch}
+func hasher(args ...string) string {
+	parts := args
 
 	// calculate the hash using the branch
 	h := md5.New()
