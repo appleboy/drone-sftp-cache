@@ -113,11 +113,9 @@ func (p Plugin) ProcessRestore(c cache.Cache) error {
 
 // helper function to hash a file name based on path and branch.
 func hasher(args ...string) string {
-	parts := args
-
 	// calculate the hash using the branch
 	h := md5.New()
-	for _, part := range parts {
+	for _, part := range args {
 		io.WriteString(h, part)
 	}
 	return fmt.Sprintf("%x", h.Sum(nil))
