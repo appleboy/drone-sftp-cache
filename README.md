@@ -47,6 +47,7 @@ docker run --rm \
   -e PLUGIN_MOUNT=node_modules \
   -e PLUGIN_RESTORE=false \
   -e PLUGIN_REBUILD=true \
+  -e PLUGIN_IGNORE_BRANCH=false \
   -e SFTP_CACHE_SERVER=1.2.3.4:22 \
   -e SFTP_CACHE_PATH=/root/cache \
   -e SFTP_CACHE_USERNAME=root \
