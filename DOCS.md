@@ -56,8 +56,8 @@ pipeline:
   sftp_cache:
     image: plugins/sftp-cache
     restore: true
-  	mount:
-  	  - node_modules
+    mount:
+      - node_modules
 
   build:
     image: node:latest
@@ -67,6 +67,6 @@ pipeline:
   sftp_cache:
     image: plugins/sftp-cache
     rebuild: true
-  	mount:
-  	  - node_modules
+    mount:
+      - node_modules
 ```
