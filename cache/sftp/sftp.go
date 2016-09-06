@@ -4,6 +4,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/drone-plugins/drone-sftp-cache/cache"
@@ -43,13 +44,8 @@ func (c *cacher) Get(p string) (io.ReadCloser, error) {
 
 // Put uploads the contents of the io.Reader to the SFTP server.
 func (c *cacher) Put(p string, t time.Duration, src io.Reader) error {
-	dir := filepath.Dir(p)
-
-	if _, serr := c.sftp.Stat(dir); serr != nil {
-		err := c.sftp.Mkdir(dir)
-		if err != nil {
-			return err
-		}
+	if e := c.CreateDirectories(p); e != nil {
+		return e
 	}
 
 	dst, err := c.sftp.Create(p)
@@ -115,4 +111,23 @@ func New(server, username, password, key string) (cache.Cache, error) {
 	}
 
 	return &cacher{sftp, client}, nil
+}
+
+// CreateDirectories creates repo directories on sftp server.
+// It works like mkdir -p /foo/bar
+func (c *cacher) CreateDirectories(p string) error {
+	pathElements := strings.Split(filepath.Dir(p), "/")
+	path := "/"
+
+	for _, el := range pathElements {
+		path = filepath.Join(path, el)
+		if _, serr := c.sftp.Stat(path); serr != nil {
+			err := c.sftp.Mkdir(path)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
