@@ -54,6 +54,7 @@ The following is a sample configuration in your .drone.yml file:
 pipeline:
   sftp_cache:
     image: plugins/sftp-cache
+    path: /var/cache/drone
     restore: true
   	mount:
   	  - node_modules
@@ -65,6 +66,7 @@ pipeline:
 
   sftp_cache:
     image: plugins/sftp-cache
+    path: /var/cache/drone
     rebuild: true
   	mount:
   	  - node_modules
