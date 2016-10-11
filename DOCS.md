@@ -52,7 +52,7 @@ The following is a sample configuration in your .drone.yml file:
 
 ```yaml
 pipeline:
-  sftp_cache:
+  restore_cache:
     image: plugins/sftp-cache
     path: /var/cache/drone
     restore: true
@@ -64,7 +64,7 @@ pipeline:
     commands:
       - npm install
 
-  sftp_cache:
+  rebuild_cache:
     image: plugins/sftp-cache
     path: /var/cache/drone
     rebuild: true
