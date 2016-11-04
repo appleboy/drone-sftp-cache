@@ -50,6 +50,6 @@ docker run --rm \
   -e SFTP_CACHE_SERVER=1.2.3.4:22 \
   -e SFTP_CACHE_PATH=/root/cache \
   -e SFTP_CACHE_USERNAME=root \
-  -e SFTP_CACHE_PRIVATE_KEY=$(cat ~/.ssh/id_rsa) \
+  -e SFTP_CACHE_PRIVATE_KEY="$(cat ~/.ssh/id_rsa)" \
   plugins/sftp-cache
 ```
