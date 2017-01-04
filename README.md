@@ -1,9 +1,8 @@
 # drone-sftp-cache
 
-[![Build Status](http://beta.drone.io/api/badges/drone-plugins/drone-sftp-cache/status.svg)](http://beta.drone.io/drone-plugins/drone-sftp-cache)
-[![Go Doc](https://godoc.org/github.com/drone-plugins/drone-sftp-cache?status.svg)](http://godoc.org/github.com/drone-plugins/drone-sftp-cache)
-[![Go Report](https://goreportcard.com/badge/github.com/drone-plugins/drone-sftp-cache)](https://goreportcard.com/report/github.com/drone-plugins/drone-sftp-cache)
-[![Join the chat at https://gitter.im/drone/drone](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/drone/drone)
+[![Build Status](http://drone.wu-boy.com/api/badges/appleboy/drone-sftp-cache/status.svg)](http://drone.wu-boy.com/appleboy/drone-sftp-cache)
+[![Go Doc](https://godoc.org/github.com/appleboy/drone-sftp-cache?status.svg)](http://godoc.org/github.com/appleboy/drone-sftp-cache)
+[![Go Report](https://goreportcard.com/badge/github.com/appleboy/drone-sftp-cache)](https://goreportcard.com/report/github.com/appleboy/drone-sftp-cache)
 
 Drone plugin for caching artifacts to a central server using rsync. For the
 usage information and a listing of the available options please take a look at
