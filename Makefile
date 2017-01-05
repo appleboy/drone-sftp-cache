@@ -25,6 +25,9 @@ endif
 
 all: build
 
+vet:
+	go vet $(PACKAGES)
+
 fmt:
 	find . -name "*.go" -type f -not -path "./vendor/*" | xargs gofmt -s -w
 
