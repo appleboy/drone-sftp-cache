@@ -29,6 +29,7 @@ type Plugin struct {
 	Default      string // default master branch
 }
 
+// Exec executes the plugin.
 func (p *Plugin) Exec() error {
 	sftp, err := sftp.New(
 		p.Server,
@@ -62,7 +63,7 @@ func (p *Plugin) Exec() error {
 	return nil
 }
 
-// Rebuild the remote cache from the local environment.
+// ProcessRebuild rebuild the remote cache from the local environment.
 func (p Plugin) ProcessRebuild(c cache.Cache) error {
 	for _, mount := range p.Mount {
 		var hash string
@@ -83,7 +84,7 @@ func (p Plugin) ProcessRebuild(c cache.Cache) error {
 	return nil
 }
 
-// Restore the local environment from the remote cache.
+// ProcessRestore restore the local environment from the remote cache.
 func (p Plugin) ProcessRestore(c cache.Cache) error {
 	for _, mount := range p.Mount {
 		var hash string
