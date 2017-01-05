@@ -1,22 +1,23 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/urfave/cli"
 )
 
-var build = "0" // build number set at compile-time
+// Version set at compile-time
+var Version string
 
 func main() {
 	app := cli.NewApp()
 	app.Name = "sftp cache plugin"
 	app.Usage = "sftp cache plugin"
 	app.Action = run
-	app.Version = fmt.Sprintf("1.0.%s", build)
+	app.Version = Version
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "repo.name",

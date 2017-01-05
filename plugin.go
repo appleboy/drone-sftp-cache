@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/drone-plugins/drone-sftp-cache/cache"
-	"github.com/drone-plugins/drone-sftp-cache/cache/sftp"
+	"github.com/appleboy/drone-sftp-cache/cache"
+	"github.com/appleboy/drone-sftp-cache/cache/sftp"
 )
 
 // Plugin for caching directories to an SFTP server.
