@@ -1,30 +1,37 @@
 workspace:
-  base: /go
+  base: /srv/app
+  path: src/github.com/appleboy/drone-sftp-cache
 
 pipeline:
   test:
-    image: golang:1.6
+    image: appleboy/golang-testing
+    pull: true
     environment:
-      - CGO_ENABLED=0
+      TAGS: netgo
+      GOPATH: /srv/app
     commands:
-      - go vet
-      - go test -cover -coverprofile=coverage.out
-      - go build -ldflags "-s -w -X main.build=$DRONE_BUILD_NUMBER" -a -tags netgo
-
-  latest:
-    image: docker
-    repo: plugins/sftp-cache
-    tags: [ "latest", "1.0", "1" ]
+      - make vet
+      - make lint
+      - make build
+      # build binary for docker image
+      - make static_build
     when:
-      branch: master
-      event: push
+      event: [ push, tag, pull_request ]
 
-plugin:
-  name: Sftp Cache
-  desc: Cache and restore your build environment
-  type: cache
-  image: plugins/sftp-cache
-  labels:
-    - cache
-    - sftp
-    - ssh
+  # deploy image from tag event
+  docker:
+    image: plugins/docker
+    repo: ${DRONE_REPO}
+    tags: [ '${DRONE_TAG}' ]
+    when:
+      event: [ tag ]
+      branch: [ refs/tags/* ]
+
+  # deploy image from master branch
+  docker:
+    image: plugins/docker
+    repo: ${DRONE_REPO}
+    tags: [ 'latest' ]
+    when:
+      event: [ push ]
+      branch: [ master ]
