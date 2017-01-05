@@ -7,8 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/drone-plugins/drone-sftp-cache/cache"
-
+	"github.com/appleboy/drone-sftp-cache/cache"
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 )
