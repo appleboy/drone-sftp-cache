@@ -6,12 +6,15 @@ import (
 	"io"
 	"log"
 	"path/filepath"
+	"regexp"
 	"time"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/appleboy/drone-sftp-cache/cache"
 	"github.com/appleboy/drone-sftp-cache/cache/sftp"
 )
+
+var skipRe = regexp.MustCompile(`\[(?i:cache *skip|skip *cache)\]`)
 
 // Plugin for caching directories to an SFTP server.
 type Plugin struct {
@@ -26,7 +29,8 @@ type Plugin struct {
 	Path         string
 	Repo         string
 	Branch       string
-	Default      string // default master branch
+	Default      string
+	Message      string
 }
 
 // Exec executes the plugin.
@@ -51,6 +55,13 @@ func (p *Plugin) Exec() error {
 	}
 
 	if p.Restore {
+		// skip the restore if any case-insensitive combination of the words "skip" and "cache"
+		skipMatch := skipRe.FindString(p.Message)
+		if len(skipMatch) > 0 {
+			logrus.Printf("skip restore cache. %s found in '%s'", skipMatch, p.Message)
+			return nil
+		}
+
 		now := time.Now()
 		err = p.ProcessRestore(sftp)
 		logrus.Printf("cache restored in %v", time.Since(now))

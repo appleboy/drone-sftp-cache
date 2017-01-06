@@ -86,6 +86,11 @@ func main() {
 			Name:  "env-file",
 			Usage: "source env file",
 		},
+		cli.StringFlag{
+			Name:   "commit.message",
+			Usage:  "commit message",
+			EnvVar: "DRONE_COMMIT_MESSAGE",
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -111,6 +116,7 @@ func run(c *cli.Context) error {
 		Repo:         c.String("repo.name"),
 		Default:      c.String("repo.branch"),
 		Branch:       c.String("commit.branch"),
+		Message:      c.String("commit.message"),
 	}
 
 	return plugin.Exec()
