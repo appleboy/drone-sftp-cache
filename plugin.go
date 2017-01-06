@@ -9,7 +9,6 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/appleboy/drone-sftp-cache/cache"
 	"github.com/appleboy/drone-sftp-cache/cache/sftp"
 )
@@ -51,24 +50,24 @@ func (p *Plugin) Exec() error {
 	if p.Rebuild {
 		now := time.Now()
 		err = p.ProcessRebuild(sftp)
-		logrus.Printf("cache built in %v", time.Since(now))
+		log.Printf("cache built in %v\n", time.Since(now))
 	}
 
 	if p.Restore {
 		// skip the restore if any case-insensitive combination of the words "skip" and "cache"
 		skipMatch := skipRe.FindString(p.Message)
 		if len(skipMatch) > 0 {
-			logrus.Printf("skip restore cache. %s found in '%s'", skipMatch, p.Message)
+			log.Printf("skip restore cache. %s found in '%s'\n", skipMatch, p.Message)
 			return nil
 		}
 
 		now := time.Now()
 		err = p.ProcessRestore(sftp)
-		logrus.Printf("cache restored in %v", time.Since(now))
+		log.Printf("cache restored in %v\n", time.Since(now))
 	}
 
 	if err != nil {
-		logrus.Println(err)
+		log.Println(err)
 	}
 
 	return nil
@@ -85,7 +84,7 @@ func (p Plugin) ProcessRebuild(c cache.Cache) error {
 		}
 		path := filepath.Join(p.Path, p.Repo, hash)
 
-		log.Printf("archiving directory <%s> to remote cache <%s>", mount, path)
+		log.Printf("archiving directory <%s> to remote cache <%s>\n", mount, path)
 
 		err := cache.RebuildCmd(c, mount, path)
 		if err != nil {
@@ -106,7 +105,7 @@ func (p Plugin) ProcessRestore(c cache.Cache) error {
 		}
 		path := filepath.Join(p.Path, p.Repo, hash)
 
-		log.Printf("restoring directory <%s> from remote cache <%s>", mount, path)
+		log.Printf("restoring directory <%s> from remote cache <%s>\n", mount, path)
 
 		err := cache.RestoreCmd(c, path, mount)
 		if err != nil {
