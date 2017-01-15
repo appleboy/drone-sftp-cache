@@ -2,7 +2,17 @@ workspace:
   base: /srv/app
   path: src/github.com/appleboy/drone-sftp-cache
 
-pipeline:
+pipeline:  clone:
+    image: plugins/git
+    tags: true
+
+  # restore the cache from an sftp server
+  restore_cache:
+    image: appleboy/drone-sftp-cache
+    restore: true
+    mount: [ .glide, vendor ]
+    ignore_branch: true
+
   test:
     image: appleboy/golang-testing
     pull: true
@@ -38,3 +48,12 @@ pipeline:
     when:
       event: [ push ]
       branch: [ master ]
+
+  # rebuild the cache on the sftp server
+  rebuild_cache:
+    image: appleboy/drone-sftp-cache
+    rebuild: true
+    mount: [ .glide, vendor ]
+    ignore_branch: true
+    when:
+      branch: master
