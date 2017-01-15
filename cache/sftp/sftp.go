@@ -79,12 +79,12 @@ func (c *cacher) Close() error {
 
 // New returns a new SFTP remote Cache implementated.
 func New(server, username, password, key string) (cache.Cache, error) {
-	config := &ssh.ClientConfig{
-		Timeout: time.Minute * 5,
-		User:    username,
-		Auth: []ssh.AuthMethod{
-			ssh.Password(password),
-		},
+	// auths holds the detected ssh auth methods
+	auths := []ssh.AuthMethod{}
+
+	// figure out what auths are requested, what is supported
+	if password != "" {
+		auths = append(auths, ssh.Password(password))
 	}
 
 	// private key authentication takes precedence
@@ -93,7 +93,13 @@ func New(server, username, password, key string) (cache.Cache, error) {
 		if err != nil {
 			return nil, err
 		}
-		config.Auth[0] = ssh.PublicKeys(signer)
+		auths = append(auths, ssh.PublicKeys(signer))
+	}
+
+	config := &ssh.ClientConfig{
+		Timeout: time.Minute * 5,
+		User:    username,
+		Auth:    auths,
 	}
 
 	// create the ssh connection and client

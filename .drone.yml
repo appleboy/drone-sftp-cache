@@ -10,6 +10,7 @@ pipeline:
       TAGS: netgo
       GOPATH: /srv/app
     commands:
+      - make dep_install
       - make vet
       - make lint
       - make build
