@@ -13,6 +13,7 @@ The following parameters are used to configure the plugin:
 * **mount** - one or an array of folders to cache
 * **rebuild** - boolean flag to trigger a rebuild
 * **restore** - boolean flag to trigger a restore
+* **ignore_branch** - boolean flag to ignore commit branch name on hash value
 
 The following secret values can be set to configure the plugin.
 
@@ -56,8 +57,8 @@ pipeline:
     image: plugins/sftp-cache
     path: /var/cache/drone
     restore: true
-  	mount:
-  	  - node_modules
+    mount:
+      - node_modules
 
   build:
     image: node:latest
@@ -68,6 +69,6 @@ pipeline:
     image: plugins/sftp-cache
     path: /var/cache/drone
     rebuild: true
-  	mount:
-  	  - node_modules
+    mount:
+      - node_modules
 ```
