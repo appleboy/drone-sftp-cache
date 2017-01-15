@@ -13,6 +13,8 @@ pipeline:
       - make dep_install
       - make vet
       - make lint
+      - coverage all
+      - make coverage
       - make build
       # build binary for docker image
       - make static_build

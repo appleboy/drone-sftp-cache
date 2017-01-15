@@ -24,5 +24,6 @@ _testmain.go
 *.prof
 .env
 
-coverage.out
+coverage.txt
 drone-sftp-cache
+vendor

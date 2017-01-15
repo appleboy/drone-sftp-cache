@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/md5"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -32,8 +33,24 @@ type Plugin struct {
 	Message      string
 }
 
+func (p *Plugin) check() error {
+	if len(p.Server) == 0 || len(p.Username) == 0 {
+		return errors.New("missing sftp server and username config")
+	}
+
+	if len(p.Password) == 0 && len(p.Key) == 0 {
+		return errors.New("missing sftp password or private key")
+	}
+
+	return nil
+}
+
 // Exec executes the plugin.
 func (p *Plugin) Exec() error {
+	if err := p.check(); err != nil {
+		return err
+	}
+
 	sftp, err := sftp.New(
 		p.Server,
 		p.Username,
