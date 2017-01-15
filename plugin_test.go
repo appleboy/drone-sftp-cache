@@ -55,7 +55,7 @@ func TestIncorrectPassword(t *testing.T) {
 	plugin := Plugin{
 		Server:   "localhost",
 		Username: "drone-scp",
-		// Port:     "22",
+		Port:     "22",
 		Password: "123456",
 	}
 

@@ -61,6 +61,12 @@ func main() {
 			EnvVar: "SFTP_CACHE_SERVER,PLUGIN_SERVER",
 		},
 		cli.StringFlag{
+			Name:   "port",
+			Usage:  "sftp server port",
+			EnvVar: "SFTP_CACHE_PORT,PLUGIN_PORT",
+			Value:  "22",
+		},
+		cli.StringFlag{
 			Name:   "path",
 			Usage:  "sftp server path",
 			EnvVar: "SFTP_CACHE_PATH,PLUGIN_PATH",
@@ -108,6 +114,7 @@ func run(c *cli.Context) error {
 		Rebuild:      c.Bool("rebuild"),
 		Restore:      c.Bool("restore"),
 		Server:       c.String("server"),
+		Port:         c.String("port"),
 		Username:     c.String("username"),
 		Password:     c.String("password"),
 		Key:          c.String("key"),

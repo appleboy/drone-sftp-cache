@@ -22,6 +22,7 @@ type Plugin struct {
 	Rebuild      bool
 	Restore      bool
 	Server       string
+	Port         string
 	Username     string
 	Password     string
 	Key          string
@@ -56,6 +57,7 @@ func (p *Plugin) Exec() error {
 		p.Username,
 		p.Password,
 		p.Key,
+		p.Port,
 	)
 
 	if err != nil {

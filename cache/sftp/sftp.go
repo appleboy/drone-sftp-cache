@@ -78,7 +78,7 @@ func (c *cacher) Close() error {
 }
 
 // New returns a new SFTP remote Cache implementated.
-func New(server, username, password, key string) (cache.Cache, error) {
+func New(server, username, password, key, port string) (cache.Cache, error) {
 	// auths holds the detected ssh auth methods
 	auths := []ssh.AuthMethod{}
 
@@ -103,7 +103,7 @@ func New(server, username, password, key string) (cache.Cache, error) {
 	}
 
 	// create the ssh connection and client
-	client, err := ssh.Dial("tcp", server, config)
+	client, err := ssh.Dial("tcp", server+":"+port, config)
 	if err != nil {
 		return nil, err
 	}
