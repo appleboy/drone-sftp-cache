@@ -23,28 +23,7 @@ The following secret values can be set to configure the plugin.
 * **SFTP_CACHE_PASSWORD** - corresponds to **password**
 * **SFTP_CACHE_PRIVATE_KEY** - corresponds to **key**
 
-It is highly recommended to put the **SFTP_CACHE_USERNAME** and
-**SFTP_CACHE_PASSWORD** or **SFTP_CACHE_PRIVATE_KEY** into a secret so it is
-not exposed to users. This can be done using the drone-cli.
-
-```bash
-drone secret add --image=plugins/sftp-cache \
-    octocat/hello-world SFTP_CACHE_USERNAME octocat
-
-drone secret add --image=plugins/sftp-cache \
-    octocat/hello-world SFTP_CACHE_PASSWORD pa55word
-
-drone secret add --image=plugins/sftp-cache \
-    octocat/hello-world SFTP_CACHE_PRIVATE_KEY @path/to/private/key
-```
-
-Then sign the YAML file after all secrets are added.
-
-```bash
-drone sign octocat/hello-world
-```
-
-See [secrets](http://readme.drone.io/0.5/usage/secrets/) for additional
+See [secrets](http://readme.drone.io/usage/secret-guide/) for additional
 information on secrets
 
 ## Example
@@ -54,7 +33,7 @@ The following is a sample configuration in your .drone.yml file:
 ```yaml
 pipeline:
   sftp_cache:
-    image: plugins/sftp-cache
+    image: applebot/drone-sftp-cache
     restore: true
     mount:
       - node_modules
@@ -65,7 +44,7 @@ pipeline:
       - npm install
 
   sftp_cache:
-    image: plugins/sftp-cache
+    image: applebot/drone-sftp-cache
     rebuild: true
     mount:
       - node_modules
