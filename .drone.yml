@@ -6,13 +6,6 @@ pipeline:  clone:
     image: plugins/git
     tags: true
 
-  # restore the cache from an sftp server
-  restore_cache:
-    image: appleboy/drone-sftp-cache
-    restore: true
-    mount: [ .glide, vendor ]
-    ignore_branch: true
-
   test:
     image: appleboy/golang-testing
     pull: true
@@ -20,7 +13,6 @@ pipeline:  clone:
       TAGS: netgo
       GOPATH: /srv/app
     commands:
-      - make dep_install
       - make vet
       - make lint
       - coverage all
@@ -48,12 +40,3 @@ pipeline:  clone:
     when:
       event: [ push ]
       branch: [ master ]
-
-  # rebuild the cache on the sftp server
-  rebuild_cache:
-    image: appleboy/drone-sftp-cache
-    rebuild: true
-    mount: [ .glide, vendor ]
-    ignore_branch: true
-    when:
-      branch: master
