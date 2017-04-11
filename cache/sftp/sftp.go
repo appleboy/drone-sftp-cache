@@ -97,9 +97,10 @@ func New(server, username, password, key, port string) (cache.Cache, error) {
 	}
 
 	config := &ssh.ClientConfig{
-		Timeout: time.Minute * 5,
-		User:    username,
-		Auth:    auths,
+		Timeout:         time.Minute * 5,
+		User:            username,
+		Auth:            auths,
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
 	// create the ssh connection and client
