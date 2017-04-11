@@ -49,9 +49,6 @@ test:
 install: $(SOURCES)
 	go install -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)'
 
-dep_install:
-	glide install
-
 dep_update:
 	glide up
 
