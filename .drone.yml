@@ -13,6 +13,7 @@ pipeline:
     environment:
       TAGS: netgo
       GOPATH: /srv/app
+      CODECOV_TOKEN: ${CODECOV_TOKEN}
     commands:
       - make vet
       - make lint
