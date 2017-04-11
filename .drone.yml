@@ -2,7 +2,8 @@ workspace:
   base: /srv/app
   path: src/github.com/appleboy/drone-sftp-cache
 
-pipeline:  clone:
+pipeline:
+  clone:
     image: plugins/git
     tags: true
 
