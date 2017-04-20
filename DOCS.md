@@ -13,7 +13,7 @@ Use this plugin for caching build artifacts to speed up your build times. This p
 ```yaml
 pipeline:
   restore_cache:
-    image: applebot/drone-sftp-cache
+    image: appleboy/drone-sftp-cache
     server: ${SFTP_CACHE_SERVER}
     port: ${SFTP_CACHE_PORT}
     username: ${SFTP_CACHE_USERNAME}
@@ -29,7 +29,7 @@ pipeline:
       - npm install
 
   rebuild_cache:
-    image: applebot/drone-sftp-cache
+    image: appleboy/drone-sftp-cache
     server: ${SFTP_CACHE_SERVER}
     port: ${SFTP_CACHE_PORT}
     username: ${SFTP_CACHE_USERNAME}
@@ -45,7 +45,7 @@ Example configuration for login with user private key:
 ```diff
 pipeline:
   rebuild_cache:
-    image: applebot/drone-sftp-cache
+    image: appleboy/drone-sftp-cache
     server: ${SFTP_CACHE_SERVER}
     port: ${SFTP_CACHE_PORT}
     username: ${SFTP_CACHE_USERNAME}
@@ -62,7 +62,7 @@ Example configuration for ignoring creates a hash file name based on branch name
 ```diff
 pipeline:
   rebuild_cache:
-    image: applebot/drone-sftp-cache
+    image: appleboy/drone-sftp-cache
     server: ${SFTP_CACHE_SERVER}
     port: ${SFTP_CACHE_PORT}
     username: ${SFTP_CACHE_USERNAME}
@@ -79,7 +79,7 @@ Example configuration for success build:
 ```diff
 pipeline:
   rebuild_cache:
-    image: applebot/drone-sftp-cache
+    image: appleboy/drone-sftp-cache
     path: /var/cache/drone
     rebuild: true
     mount:
@@ -93,7 +93,7 @@ Example configuration for tag event:
 ```diff
 pipeline:
   rebuild_cache:
-    image: applebot/drone-sftp-cache
+    image: appleboy/drone-sftp-cache
     path: /var/cache/drone
     rebuild: true
     mount:
