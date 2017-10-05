@@ -1,6 +1,6 @@
 workspace:
-  base: /srv/app
-  path: src/github.com/appleboy/drone-sftp-cache
+  base: /go/src/
+  path: github.com/appleboy/drone-sftp-cache
 
 pipeline:
   clone:
@@ -10,10 +10,7 @@ pipeline:
   test:
     image: appleboy/golang-testing
     pull: true
-    environment:
-      TAGS: netgo
-      GOPATH: /srv/app
-      CODECOV_TOKEN: ${CODECOV_TOKEN}
+    secrets: [ codecov_token ]
     commands:
       - make vet
       - make lint
