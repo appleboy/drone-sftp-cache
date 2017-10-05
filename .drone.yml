@@ -37,6 +37,7 @@ pipeline:
     image: plugins/docker
     repo: ${DRONE_REPO}
     tags: [ '${DRONE_TAG}' ]
+    secrets: [ docker_username, docker_password ]
     when:
       event: [ tag ]
       branch: [ refs/tags/* ]
@@ -46,6 +47,7 @@ pipeline:
     image: plugins/docker
     repo: ${DRONE_REPO}
     tags: [ 'latest' ]
+    secrets: [ docker_username, docker_password ]
     when:
       event: [ push ]
       branch: [ master ]
