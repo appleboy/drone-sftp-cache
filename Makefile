@@ -76,6 +76,3 @@ docker: static_build docker_image
 
 coverage:
 	sed -i '/main.go/d' .cover/coverage.txt
-	curl -s https://codecov.io/bash > .codecov && \
-	chmod +x .codecov && \
-	./.codecov -f .cover/coverage.txt
